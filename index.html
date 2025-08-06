@@ -97,15 +97,15 @@
             <p>Somos apaixonados por tartarugas e dedicamos nossa vida a cuidar desses animais incríveis. Com mais de 10 anos de experiência, oferecemos os melhores produtos e serviços para garantir a saúde e felicidade do seu pet.</p>
             <div class="stats">
                 <div class="stat">
-                    <h3>500+</h3>
+                    <h3 class="counter" data-target="500">0</h3>
                     <p>Tartarugas felizes</p>
                 </div>
                 <div class="stat">
-                    <h3>10+</h3>
+                    <h3 class="counter" data-target="10">0</h3>
                     <p>Anos de experiência</p>
                 </div>
                 <div class="stat">
-                    <h3>50+</h3>
+                    <h3 class="counter" data-target="50">0</h3>
                     <p>Produtos especializados</p>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                 <div class="contact-info">
                     <h3>Informações de Contato</h3>
                     <p>📍 Rua das Tartarugas, 123 - Centro</p>
-                    <p>📞 (11) 99999-9999</p>
+                    <p>📞 (66) 98765-1234</p>
                     <p>✉️ contato@petlover.com.br</p>
                     <p>🕒 Seg-Sex: 9h-18h | Sáb: 9h-13h</p>
                 </div>
@@ -172,6 +172,47 @@
                 localStorage.setItem('theme', 'light');
             }
         });
+
+        // Counter animation functionality
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100; // Adjust speed here
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    clearInterval(timer);
+                    element.textContent = target + (element.textContent.includes('+') ? '+' : '');
+                } else {
+                    element.textContent = Math.ceil(current) + (element.textContent.includes('+') ? '+' : '');
+                }
+            }, 20); // Adjust speed here (lower = faster)
+        }
+
+        // Initialize counters when section is in view
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200; // Animation duration in ms
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        animateCounter(counter, target);
+                        observer.unobserve(counter); // Stop observing after animation
+                    }
+                });
+            }, {
+                threshold: 0.5 // Trigger when 50% of the element is visible
+            });
+
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
+        }
+
+        // Initialize counters when page loads
+        document.addEventListener('DOMContentLoaded', initCounters);
     </script>
 </body>
 </html>

@@ -330,6 +330,7 @@ nav ul li a:hover {
     font-size: 2.5rem;
     color: var(--stat-color);
     margin-bottom: 10px;
+    transition: color 0.3s;
 }
 
 /* Contact Section */
